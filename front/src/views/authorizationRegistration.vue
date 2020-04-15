@@ -115,3 +115,168 @@
     </v-snackbar>
     </v-container>
 </template>
+<script>
+import postRegistration from '../services/AuthorizationRegistrationPage/regisration/postRegistration.js';
+import postAuthorization from '../services/AuthorizationRegistrationPage/authorization/postAuthorization.js';
+
+export default {
+    name: "Registration-Authorization",
+    data: () => {
+        return {
+            page: "registration",
+            email: "",
+            password: "",
+            passwordRepeat: "",
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
+            serverStatus: "",
+            snackbar: false,
+            shackbarColor: "",
+            loading: false
+        }
+    },
+    computed: {
+            passwordRules() {
+                return this.password === this.passwordRepeat  || "Пароли не совпадают"
+            },
+            formStatus() {
+                switch(this.page) {
+                    case "registration": {
+                        if(( this.email && /.+@.+\..+/.test(this.email)) && this.password === this.passwordRepeat && this.password && this.passwordRepeat) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                    case "authorization": {
+                        if(this.email && /.+@.+\..+/.test(this.email) && this.password) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+                return null;
+            }
+    },
+    methods: {
+        registrationFormActivate(){
+            this.page = "registration";
+            this.clearForm();
+        },
+        authorizationFormActivate(){
+            this.page = "authorization";
+            this.clearForm();
+        },
+        clearForm() {
+            this.email = "";
+            this.password = "";
+        },
+        submitRegistration() {
+            this.loading = true;
+            postRegistration({
+                email: this.email,
+                password: this.password
+            })
+            .then( (res) => {
+                console.log(res.data);
+                if(res.data.status === "Email confirmation") {
+                    this.loading = false;
+                    this.serverStatus = "Вам на почту отправлено письмо для активации учетной записи"
+                    this.snackbar = true;
+                    this.shackbarColor = "success"
+                    this.page = "authorization";
+                }
+            })
+            .catch( (err) => {
+                console.log("Error");
+                console.log(err.response);
+                if(err.response.data.status === "Duplicate") {
+                    this.serverStatus = "Учетная запись на данный адрес уже зарегистрирована";
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+                    setTimeout( () => this.loading = false , 1000);
+                } else if(err.response.data.status === "Fail") {
+                    this.serverStatus = "Ошибка";
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+                    setTimeout( () => this.loading = false , 1000);
+                } else {
+                    this.serverStatus = "Ошибка сервера";
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+                    setTimeout( () => this.loading = false , 1000);
+                }
+            });
+           
+        },
+        submitAuthorization() {
+            postAuthorization({
+                email: this.email,
+                password: this.password
+            })
+            .then( (res) => {
+                console.log("then");
+                console.log(res);
+                console.log(res.data);
+                if(res.data.status === "Deactive account") {
+                    this.serverStatus = "Вам нужно подтвердить вашу учетную запись";
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+                } else if(res.data.status === "Success") {
+                    console.log(res.data.id);
+                    // this.$router.push("/");
+                    document.cookie = "Session=" + res.data.id + ";";
+                } else if(res.data.status === "Fail authorization") {
+                    this.serverStatus = "Вам нужно подтвердить вашу учетную запись";
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+                }
+            })
+            .catch( (err) => {
+                console.log("Error");
+                if(err.response.data.status === "Fail") {
+                    this.serverStatus = "Ошибка авторизации"
+                    this.snackbar = true;
+                    this.shackbarColor = "error";
+
+                } else {
+                    this.serverStatus = "Ошибка сервера"
+                    this.snackbar = true;
+                    this.shackbarColor = "error"
+
+                }
+            });
+           
+        }
+    }
+}
+</script>
+
+<style scoped>
+
+.max-w-600 {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
+.scale-enter-active {
+  animation: scale 0.5s;
+} 
+.scale-leave-active {
+    animation: scale 0.5s reverse;
+}
+
+@keyframes scale {
+    from{ 
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+</style>
