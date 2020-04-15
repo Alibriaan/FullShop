@@ -37,3 +37,15 @@
     </v-content>
   </v-app>
 </template>
+
+<style>
+
+
+.v-application .v-toolbar {
+  flex: 0 1 auto;
+}
+
+#app .v-toolbar__content, .v-toolbar__extension {
+  padding: 0 25px;
+}
+</style>
