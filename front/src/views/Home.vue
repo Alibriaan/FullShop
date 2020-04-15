@@ -17,3 +17,42 @@
     </v-row>
   </v-container>
 </template>
+
+<script>
+import getListOfItem from "../services/mainPage/getListOfItem.js";
+// import axios from "axios";
+export default {
+  name: 'Home',
+  data: () => {
+    return {
+      catalog: false
+    }
+  },
+  created() {
+      getListOfItem()
+      .then((res) => {
+          console.log(res);
+          this.catalog = res.data;
+          console.log("Success");
+      })
+      .catch((err) => {
+          console.log(err);
+          console.log("Error");
+      });
+  },
+</script>
+<style scoped>
+
+.navigation-menu{
+  background: red;
+  max-width: 250px;
+}
+
+.main-shop-container{
+  background: green;
+}
+
+#app .v-list-item {
+  min-height: 32px;
+}
+</style>
