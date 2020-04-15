@@ -19,11 +19,14 @@ module.exports = (app) => {
         cookie: {
             path: "/",
             httpOnly: false,
-            maxAge: null,
+            maxAge: 60 * 1000,
             secure: false
         },
-        store: new MongoStore({mongooseConnection: connection,
-        ttl: 0.5 * 24 * 60 * 60})
+        store: new MongoStore({
+            mongooseConnection: connection,
+            //ttl: 0.5 * 24 * 60 * 60
+            ttl: 60 * 1000
+        })
     }))
     app.use(morgan("combined"));
     app.use(cors());
