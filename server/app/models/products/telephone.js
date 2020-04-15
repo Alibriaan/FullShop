@@ -1,0 +1,20 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const telephoneSchema = new Schema({
+  name: String,
+  os: String,
+  information: {
+      type: Object,
+      osVersion: String,
+      resolution: String,
+      matrix: String,
+      ram: String,
+      memory: String,
+      camera: String,
+      chip: String,
+      battery: String
+    }
+});
+
+mongoose.model("telephone", telephoneSchema);
