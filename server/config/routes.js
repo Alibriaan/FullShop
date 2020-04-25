@@ -5,9 +5,6 @@ const confirmationRepeatControler = require("../app/controllers/timeOutVerificat
 const getProductListControler = require("../app/controllers/getProductList.js");
 const mailer = require("./nodemailer");
 
-
-const testSession = require("../app/controllers/sessionTest.js");
-
 module.exports = (app) => {
   // registration
  app.post("/registration", registrationControler.signUp),
@@ -21,8 +18,6 @@ module.exports = (app) => {
  // get list of products 
  app.get("/list-of-item", getProductListControler.getAllShopProducts);
 
- // test 
-  app.get("/session", testSession.testSession);
 }
 
 /*
