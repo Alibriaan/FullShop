@@ -7,6 +7,8 @@ const mailer = require("../../config/nodemailer");
 const User = mongoose.model("User");
 
 const ERR_USER_EXSIST = 11000;
+const ERR_MAIL_DOESNT_SEND = "ERR_MAIL_DOESNT_SEND";
+const SUCCESS_REGISTRATION = "SUCCESS_REGISTRATION";
 
 const signUp = (req, res) => {
     console.log("Regisration controler start");
@@ -67,12 +69,12 @@ function sendList(mailConfig, res) {
         if(err) {
             console.log("Send Email error");
             return res.status(401).json({
-                status: "Error"
+                status: ERR_MAIL_DOESNT_SEND
             });
         } else {
             console.log("Email send");
             return res.json({
-            status: "Email confirmation"
+            status: SUCCESS_REGISTRATION
             });
         }
     });
