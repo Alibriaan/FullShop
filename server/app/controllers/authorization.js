@@ -14,9 +14,8 @@ const signIn = (req, res) => {
         const exsistStatus = isExsistUser(user);
         const validStatus = isValidUser(user, password);
         const activeStatus = isActiveUser(user);
-
         if(exsistStatus && validStatus && activeStatus) {
-            console.log("success");
+            console.log(SUCCESS_AUTHORIZATION);
             req.session.email = user.email;
             res.json({
                 status: SUCCESS_AUTHORIZATION,
@@ -40,7 +39,6 @@ function isActiveUser(user) {
     if(user) return user.status === "Active";
     else return false;
 }
-
 function errorHandler(errorStatus, res) {
     const [exsistStatus, validStatus, activeStatus] = errorStatus;
     console.log("error");
