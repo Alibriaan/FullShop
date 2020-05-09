@@ -1,20 +1,19 @@
 <template>
-  <v-app >
+  <v-app>
     <v-app-bar
-      color="primary"
-      dark
       class="pa-0"
       content="3"
+      v-if="$route.meta.headerDisplay === true"
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
+      <v-app-bar-nav-icon class="d-sm-block d-md-none"></v-app-bar-nav-icon>
       <v-toolbar-title>Phone Shop</v-toolbar-title>
-
       <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
+      <v-switch
+        v-model="$vuetify.theme.dark"
+        hide-details
+        inset
+        label="Theme"
+      ></v-switch>
 
       <v-btn icon>
         <v-badge
@@ -30,14 +29,82 @@
 
     </v-app-bar>
     <v-content>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/posts">About</router-link> |
-      <router-link to="/authorization-registration">Sign In / Sign Up</router-link>
-      <router-view/>
+    <transition name="slide-left"  mode="out-in">
+      <router-view :key="$route.path" />
+    </transition>
+      <v-speed-dial
+      v-model="fab"
+      fixed
+      bottom
+      right
+      direction="top"
+      transition="slide-y-reverse-transition"
+    >
+      <template v-slot:activator>
+        <v-btn
+          color="blue"
+          dark
+          fab
+        >
+          <v-icon v-if="fab">mdi-close</v-icon>
+          <v-icon v-else>mdi-cog</v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        fab
+        dark
+        small
+        color="green"
+        @click="changeTheme"
+      >
+        <v-icon>mdi-compare</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <v-icon>mdi-account-tie-voice</v-icon>
+      </v-btn>
+      <v-btn
+        v-if="$route.meta.logoutButtonDisplay === true"
+        @click="logout"
+        fab
+        dark
+        small
+        color="red"
+      >
+        <v-icon>mdi-exit-run</v-icon>
+      </v-btn>
+    </v-speed-dial>
     </v-content>
+    
   </v-app>
 </template>
 
+<script>
+export default {
+  name: "app",
+  data: () => ({
+        fab: false,
+  }),
+  methods: {
+    changeTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
+    logout() {
+      this.$router.push(`/authorization-registration`); 
+    },
+    getImg() {
+      return require("./assets/iphone6.png")
+    }
+  },
+  mounted() {
+    // this.$vuetify.theme.dark = true;
+  }
+}
+</script>
 <style>
 
 
@@ -47,5 +114,29 @@
 
 #app .v-toolbar__content, .v-toolbar__extension {
   padding: 0 25px;
+}
+
+.v-content__wrap {
+  position: relative;
+}
+
+
+
+.slide-left-enter-active {
+  animation: slide_left 0.5s;
+} 
+.slide-left-leave-active {
+  animation: slide_left 0.5s reverse;
+}
+
+@keyframes slide_left {
+    from{ 
+        transform: translateX(100px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
 }
 </style>
