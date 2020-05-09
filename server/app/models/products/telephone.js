@@ -2,10 +2,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const telephoneSchema = new Schema({
+  ID: String,
   name: String,
   os: String,
+  price: String,
+  imgPath: String,
+  description: String,
   information: {
-      type: Object,
       osVersion: String,
       resolution: String,
       matrix: String,
