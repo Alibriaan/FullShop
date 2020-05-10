@@ -46,16 +46,14 @@ export default {
       console.log("Get list of item");
       getListOfItem()
       .then((res) => {
-          console.log(res);
           this.catalog = res.data;
-          console.log("Success");
       })
       .catch((err) => {
-          console.log(err);
-          console.log("Error");
+          console.error(err);
       });
-      console.log(this.$route)
-  }}
+  }
+}
+  
 </script>
 
 <style scoped>
@@ -67,24 +65,5 @@ export default {
 
 a {
   text-decoration: none;
-}
-
-
-.slide-left-enter-active {
-  animation: slide_left 0.5s;
-} 
-.slide-left-leave-active {
-  animation: slide_left 0.5s reverse;
-}
-
-@keyframes slide_left {
-    from{ 
-        transform: translateX(100px) scale(0.9);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-    }
 }
 </style>
