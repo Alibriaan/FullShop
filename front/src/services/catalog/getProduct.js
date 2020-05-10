@@ -1,4 +1,4 @@
 import api from "../api.js";
-export default (type) => {
-    return api().post('/product', type);
+export default ({id, page}) => {
+    return api().post('/product', {id, page});
   }
