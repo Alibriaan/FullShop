@@ -9,6 +9,7 @@ export default new Vuetify({
           light: {
             primary: '#3f51b5',
             secondary: '#b0bec5',
+            success: "4CAF50",
             accent: '#8c9eff',
             error: '#ff5252',
             primarylink: "#121212",
@@ -18,7 +19,11 @@ export default new Vuetify({
             primaryrproductcardtext: "#121212",
             primaryregisrationauthorizationform: "#ffffff",
             secondaryregisrationauthorizationform: "#1976D2",
-            paginationColor: "#1976D2"
+            paginationColor: "#1976D2",
+            basketBtnColor: "#2196F3",
+            basketBtnTextColor: "#ffffff",
+            basketTextColor: "#121212",
+            basketCompleteBtn: "4CAF50"
           },
           dark: {
               primary: "#E0E0E0",
@@ -31,7 +36,12 @@ export default new Vuetify({
               primaryrproductcardtext: "#121212",
               primaryregisrationauthorizationform: "#ffffff",
               secondaryregisrationauthorizationform: "#1976D2",
-              paginationColor: "#1976D2"
+              paginationColor: "#1976D2",
+              basketBtnColor: "#2196F3",
+              basketBtnTextColor: "#ffffff",
+              basketTextColor: "#121212",
+              success: "#4CAF50",
+              basketCompleteBtn: "4CAF50"
           }
         },
       },
