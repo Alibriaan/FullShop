@@ -7,6 +7,8 @@ import Basket from '../views/Basket.vue';
 import authorizationRegistration from "../views/authorizationRegistration.vue";
 import verificationPage from "../views/Confirmation.vue";
 
+//import store from "../store/index";
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -16,7 +18,9 @@ const routes = [
     component: Home,
     meta: {
       headerDisplay: false,
-      logoutButtonDisplay: true
+      logoutButtonDisplay: true,
+      backBtn: false,
+      animationStatus: true
     } 
   },
   {
@@ -25,7 +29,9 @@ const routes = [
     component: authorizationRegistration,
     meta: {
       headerDisplay: false,
-      logoutButtonDisplay: false
+      logoutButtonDisplay: false,
+      animationStatus: true
+
     } 
   },
   {
@@ -34,7 +40,8 @@ const routes = [
     component: verificationPage,
     meta: {
       headerDisplay: false,
-      logoutButtonDisplay: false
+      logoutButtonDisplay: false,
+      animationStatus: true
     } 
   },
   {
@@ -43,7 +50,9 @@ const routes = [
     component: Catalog,
     meta: {
       headerDisplay: false,
-      logoutButtonDisplay: true
+      logoutButtonDisplay: true,
+      backBtn: true,
+      animationStatus: true
     },
   },
   {
@@ -52,13 +61,24 @@ const routes = [
     component: Basket,
     meta: {
       headerDisplay: false,
-      logoutButtonDisplay: true
+      logoutButtonDisplay: true,
+      backBtn: true,
+      animationStatus: true
     },
   },
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+    if(from.name === "Basket" && to.name === "Catalog") {
+      router.prevRoute = "/";
+    } else {
+      router.prevRoute = from.fullPath;
+    }
+    next()
 })
 
 export default router
