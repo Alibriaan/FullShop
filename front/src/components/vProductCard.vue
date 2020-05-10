@@ -21,7 +21,7 @@
       <v-btn 
       class="primaryrproductcardtext--text"
       text
-      @click="emitClick"
+      @click="emitClick(information)"
       >
       <v-icon>
         mdi-cart-plus
@@ -70,9 +70,9 @@ export default {
     toggleExpand() {
       this.show = !this.show
     },
-    emitClick() {
+    emitClick(product) {
       console.log("Emit Event");
-      this.$emit('add-in-cart-click')
+      this.$emit('add-in-cart-click',product);
     }
   }
 }
