@@ -1,5 +1,4 @@
 <template>
-    <transition name="slide-left"  mode="out-in">
     <v-container
     fluid
     >
@@ -15,21 +14,7 @@
             <v-product-card v-on:add-in-cart-click="addInCart" :information="item" :key="index" />
         </template>
     </v-row>
-    <v-fab-transition>
-              <v-btn
-                color="red"
-                @click="backInMainPage"
-                dark
-                fixed
-                top
-                left
-                small
-                fab
-              >
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-    </v-fab-transition>
-    <template v-if="basketSize > 0">
+    <template v-if="basketStatus">
         <transition name="scale" mode="in-out">
             <v-fab-transition>
                 <v-btn
@@ -54,7 +39,6 @@
       circle
     ></v-pagination>
     </v-container>
-    </transition>
 </template>
 
 <script>
@@ -69,7 +53,6 @@ export default {
     data: () => {
         return {
             paginationPage: 1,
-            basketSize: 0
         }
     },
     watch: {
@@ -78,24 +61,28 @@ export default {
         }
     },
     computed: {
-         ...mapGetters(["allProducts", "page", "productCount"])
+         ...mapGetters(["allProducts", "page", "basketStatus", "productCount"])
     },
     methods: {
-        ...mapActions(["getProductsFromTheDatabase", "changePage", "clearPagination"]),
+        ...mapActions(["getProductsFromTheDatabase", "changePage", "clearPagination", "addToBasket"]),
         backInMainPage() {
             this.$router.push('/');
         },
         goToBasket() {
             this.$router.push("/basket");
         },
-        addInCart() {
-            console.log("Emit get");
+        addInCart(product) {
             this.basketSize += 1;
+            this.addToBasket(product);
+            console.log(product)
         }
     },
     created() {
         this.paginationPage = this.page;
-        this.getProductsFromTheDatabase(this.$route.params.id);
+        this.getProductsFromTheDatabase( {
+            id: this.$route.params.id, 
+            page: this.paginationPage
+        });
     },
     beforeRouteLeave (to, from, next) {
       if(to.name === "Home") {
@@ -107,26 +94,6 @@ export default {
 </script>
 
 <style scoped>
-
-
-.slide-left-enter-active {
-  animation: slide_left 0.5s;
-} 
-.slide-left-leave-active {
-  animation: slide_left 0.5s reverse;
-}
-
-@keyframes slide_left {
-    from{ 
-        transform: translateX(100px) scale(0.9);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-    }
-}
-
 
 .scale-enter-active {
   animation: scale 0.5s;
