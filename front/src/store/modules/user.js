@@ -1,7 +1,8 @@
 export default {
     state: {
         email: null,
-        password: null
+        password: null,
+        userId: null
     },
     mutations: {},
     actions: {
