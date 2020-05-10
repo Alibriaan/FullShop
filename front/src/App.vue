@@ -29,8 +29,24 @@
 
     </v-app-bar>
     <v-content>
-    <transition name="slide-left"  mode="out-in">
+    <transition name="slide-left"  mode="out-in" v-if="$route.meta.animationStatus === true">
       <router-view :key="$route.path" />
+    </transition>
+    <transition name="scale">
+      <v-fab-transition v-if="$route.meta.backBtn === true">
+        <v-btn
+          color="red"
+          @click="backIn"
+          dark
+          fixed
+          top
+          left
+          small
+          fab
+        >
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-fab-transition>
     </transition>
       <v-speed-dial
       v-model="fab"
@@ -96,17 +112,14 @@ export default {
     logout() {
       this.$router.push(`/authorization-registration`); 
     },
-    getImg() {
-      return require("./assets/iphone6.png")
+    backIn() {
+      this.$router.push(this.$router.prevRoute);
     }
   },
-  mounted() {
-    // this.$vuetify.theme.dark = true;
-  }
 }
 </script>
-<style>
 
+<style>
 
 .v-application .v-toolbar {
   flex: 0 1 auto;
@@ -119,8 +132,6 @@ export default {
 .v-content__wrap {
   position: relative;
 }
-
-
 
 .slide-left-enter-active {
   animation: slide_left 0.5s;
