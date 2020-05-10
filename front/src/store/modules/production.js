@@ -2,18 +2,14 @@ import getProductQuery from "../../services/catalog/getProduct.js";
 
 export default {
     state: {
-        productsList: null,
-        productCount: null,
+        productsList: [],
         productType: "",
         paginationPage: 1
     },
     mutations: {
         getProductsFromTheDatabase(state, payload) {
             state.productsList = payload;
-            state.productCount = payload.length;
             console.log( state.productsList);
-            console.log( state.productCount);
-
         },
         changePage(state, pageNumber) {
             state.paginationPage = pageNumber;
@@ -23,10 +19,9 @@ export default {
         }
     },
     actions: {
-        getProductsFromTheDatabase({ commit }, type) {
-            console.log("otpravka na server");
-            console.log(type);
-            getProductQuery({type})
+        getProductsFromTheDatabase({ commit }, {id, page}) {
+            console.log(id);
+            getProductQuery({id, page})
             .then(response => {
                 commit('getProductsFromTheDatabase', response.data.payload);
             })
@@ -44,6 +39,6 @@ export default {
     getters: {
         allProducts: state => state.productsList,
         page: state => state.paginationPage,
-        productCount: state => state.productCount
+        productCount: state => state.productsList.length
     }
 };
