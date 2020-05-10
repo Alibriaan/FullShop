@@ -20,17 +20,3 @@ export default new Vuex.Store({
     userModule
   }
 })
-
-
-// state: {
-//   email: "",
-//   password: "",
-//   listOfItem: "",
-//   sessionID: getSession()
-// },
-// mutations: {
-// },
-// actions: {
-// },
-// modules: {
-// }
